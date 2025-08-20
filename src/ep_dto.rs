@@ -16,6 +16,7 @@ pub struct Experiment {
     pub variant_rules: Vec<VariantRule>,
     pub variants: Vec<Variant>,
     pub base_mod: Traffic,
+    pub randomization_unit_key: String,
 }
 
 // Target under Feature Flag Variant Rule
@@ -100,6 +101,7 @@ mod tests {
             variant_rules: vec![first_variant_rule],
             variants: vec![color_red_variant, color_blue_variant],
             base_mod: Traffic { spectrum: "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111".to_string() },
+            randomization_unit_key: "LOOKUP_ID".to_string(),
         };
         assert_eq!(color_experiment.name, "Color Experiment");
         assert_eq!(color_experiment.variants.len(), 2);

@@ -11,13 +11,32 @@ use std::collections::HashMap;
 pub struct EvaluationContext {
     // Intake
     pub experiment_list: Vec<Experiment>,
-    pub context_map: HashMap<&'static str, &'static str>,
+    pub context_map: HashMap<String, String>,
+    pub opt_in_variant_display_ids: Vec<String>,
 
     // Output
     pub error_code: i32,
     pub error_message: String,
-    pub result_by_phase: HashMap<&'static str, EvaluationResult>,
+    pub result_by_mapper: HashMap<String, EvaluationResult>,
+    pub result_by_phase: HashMap<String, EvaluationResult>,
     pub result: EvaluationResult,
+}
+
+impl Default for EvaluationContext {
+    fn default() -> Self {
+        EvaluationContext {
+            experiment_list: vec![],
+            context_map: HashMap::new(),
+            opt_in_variant_display_ids: vec![],
+            error_code: 0,
+            error_message: "".to_string(),
+            result_by_mapper: HashMap::new(),
+            result_by_phase: HashMap::new(),
+            result: EvaluationResult {
+                variant_result_map: HashMap::new(),
+            },
+        }
+    }
 }
 
 // Evaluation Result by individual variant id
@@ -51,16 +70,11 @@ mod tests {
     #[test]
     fn evaluation_context_creation() {
         let evaluation_context = EvaluationContext {
-            experiment_list: vec![],
-            context_map: HashMap::new(),
-            error_code: 0,
-            error_message: "".to_string(),
-            result_by_phase: HashMap::new(),
-            result: EvaluationResult {
-                variant_result_map: HashMap::new()
-            }
+            opt_in_variant_display_ids: vec!["0aX0".to_string()],
+            ..Default::default()
         };
         assert_eq!(evaluation_context.result_by_phase.len(), 0);
+        assert_eq!(evaluation_context.opt_in_variant_display_ids.len(), 1);
         assert_eq!(evaluation_context, evaluation_context);
     }
 }
